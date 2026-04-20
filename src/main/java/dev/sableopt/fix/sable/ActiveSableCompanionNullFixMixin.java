@@ -12,12 +12,11 @@ public class ActiveSableCompanionNullFixMixin {
 
     @Inject(
         method = "getContaining(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/Position;)Ldev/ryanhcode/sable/SubLevel;",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I", shift = At.Shift.BEFORE),
+        at = @At("HEAD"),
         cancellable = true,
-        require = 0,
-        allow = 1
+        require = 0
     )
-    private static void sableopt$nullCheckGetContaining(Level level, Position pos, CallbackInfoReturnable<Object> cir) {
+    private void sableopt$nullCheckGetContaining(Level level, Position pos, CallbackInfoReturnable<Object> cir) {
         if (pos == null) {
             cir.setReturnValue(null);
         }
@@ -25,12 +24,11 @@ public class ActiveSableCompanionNullFixMixin {
 
     @Inject(
         method = "projectOutOfSubLevel(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/Position;)Lnet/minecraft/world/phys/Vec3;",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I", shift = At.Shift.BEFORE),
+        at = @At("HEAD"),
         cancellable = true,
-        require = 0,
-        allow = 1
+        require = 0
     )
-    private static void sableopt$nullCheckProjectOutOfSubLevel(Level level, Position pos, CallbackInfoReturnable<Object> cir) {
+    private void sableopt$nullCheckProjectOutOfSubLevel(Level level, Position pos, CallbackInfoReturnable<Object> cir) {
         if (pos == null) {
             cir.setReturnValue(null);
         }
