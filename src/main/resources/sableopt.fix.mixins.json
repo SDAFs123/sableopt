@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_21",
   "plugin": "dev.sableopt.mixin.plugin.SableOptMixinPlugin",
   "client": [
-    "PoseStackFixMixin"
+    "PoseStackFixMixin",
+    "ActiveSableCompanionNullFixMixin"
   ],
   "injectors": {
     "defaultRequire": 0
   }
+}
 }
