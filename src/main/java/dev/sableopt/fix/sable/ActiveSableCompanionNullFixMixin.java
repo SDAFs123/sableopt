@@ -2,6 +2,7 @@ package dev.sableopt.fix.sable;
 
 import java.util.Optional;
 import net.minecraft.core.Position;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -11,24 +12,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ActiveSableCompanionNullFixMixin {
 
     @Inject(
-        method = "getContaining",
+        method = "getContaining(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/Position;)Ldev/ryanhcode/sable/SubLevel;",
         at = @At("HEAD"),
         cancellable = true
     )
-    private void sableopt$nullCheckGetContaining(Position pos, CallbackInfoReturnable<Optional<?>> cir) {
+    private void sableopt$nullCheckGetContaining(Level level, Position pos, CallbackInfoReturnable<Object> cir) {
         if (pos == null) {
-            cir.setReturnValue(Optional.empty());
+            cir.setReturnValue(null);
         }
     }
 
     @Inject(
-        method = "projectOutOfSubLevel",
+        method = "projectOutOfSubLevel(Lnet/minecraft/world/level/Level;Lorg/joml/Vector3dc;Lorg/joml/Vector3d;)Lorg/joml/Vector3d;",
         at = @At("HEAD"),
         cancellable = true
     )
-    private void sableopt$nullCheckProjectOutOfSubLevel(Position pos, CallbackInfoReturnable<Position> cir) {
+    private void sableopt$nullCheckProjectOutOfSubLevel(Level level, Object pos, Object dest, CallbackInfoReturnable<Object> cir) {
         if (pos == null) {
-            cir.setReturnValue(null);
+            cir.setReturnValue(dest);
         }
     }
 }

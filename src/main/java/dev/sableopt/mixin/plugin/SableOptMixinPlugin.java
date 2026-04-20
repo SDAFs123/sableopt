@@ -21,11 +21,20 @@ public class SableOptMixinPlugin implements IMixinConfigPlugin {
     
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.contains("sable") || mixinClassName.contains("SubLevel") || mixinClassName.contains("PoseStack")) {
-            return SableOptimizations.isSableInstalled();
+        if (mixinClassName.contains("Active") || mixinClassName.contains("sable") || mixinClassName.contains("SubLevel") || mixinClassName.contains("PoseStack")) {
+            try {
+                return net.neoforged.fml.ModList.get().getModContainerById("sable").isPresent();
+            } catch (Exception e) {
+                return true;
+            }
         }
         if (mixinClassName.contains("voxy") || mixinClassName.contains("Voxy")) {
-            return SableOptimizations.isSableInstalled() && net.neoforged.fml.ModList.get().getModContainerById("voxy").isPresent();
+            try {
+                return net.neoforged.fml.ModList.get().getModContainerById("sable").isPresent() 
+                    && net.neoforged.fml.ModList.get().getModContainerById("voxy").isPresent();
+            } catch (Exception e) {
+                return true;
+            }
         }
         return true;
     }
