@@ -3,10 +3,11 @@
   "minVersion": "0.8",
   "package": "dev.sableopt.fix.sable",
   "compatibilityLevel": "JAVA_21",
-  "plugin": "dev.sableopt.mixin.plugin.SableOptMixinPlugin",
-  "client": [
-    "PoseStackFixMixin",
+  "mixins": [
     "ActiveSableCompanionNullFixMixin"
+  ],
+  "client": [
+    "PoseStackFixMixin"
   ],
   "injectors": {
     "defaultRequire": 0

@@ -1,50 +1,38 @@
 package dev.sableopt.fix.sable;
 
 import net.minecraft.core.Position;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(targets = "dev.ryanhcode.sable.ActiveSableCompanion", remap = false)
 public class ActiveSableCompanionNullFixMixin {
 
-    @Overwrite
-    public Object getContaining(final Level level, final Position pos) {
+    @Inject(
+        method = "getContaining(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/Position;)Ldev/ryanhcode/sable/SubLevel;",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I", shift = At.Shift.BEFORE),
+        cancellable = true,
+        require = 0,
+        allow = 1
+    )
+    private static void sableopt$nullCheckGetContaining(Level level, Position pos, CallbackInfoReturnable<Object> cir) {
         if (pos == null) {
-            return null;
-        }
-        final int chunkX = Mth.floor(pos.x()) >> 4;
-        final int chunkZ = Mth.floor(pos.z()) >> 4;
-        try {
-            var method = ((Object)this).getClass().getMethod("getContaining", Level.class, int.class, int.class);
-            return method.invoke(this, level, chunkX, chunkZ);
-        } catch (Exception e) {
-            return null;
+            cir.setReturnValue(null);
         }
     }
 
-    @Overwrite
-    public net.minecraft.world.phys.Vec3 projectOutOfSubLevel(final Level level, final Position pos) {
+    @Inject(
+        method = "projectOutOfSubLevel(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/Position;)Lnet/minecraft/world/phys/Vec3;",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I", shift = At.Shift.BEFORE),
+        cancellable = true,
+        require = 0,
+        allow = 1
+    )
+    private static void sableopt$nullCheckProjectOutOfSubLevel(Level level, Position pos, CallbackInfoReturnable<Object> cir) {
         if (pos == null) {
-            return null;
-        }
-        try {
-            var getContainingMethod = ((Object)this).getClass().getMethod("getContaining", Level.class, Position.class);
-            Object subLevel = getContainingMethod.invoke(this, level, pos);
-            if (subLevel == null) {
-                if (pos instanceof final net.minecraft.world.phys.Vec3 vec) {
-                    return vec;
-                }
-                return new net.minecraft.world.phys.Vec3(pos.x(), pos.y(), pos.z());
-            }
-            var projectMethod = ((Object)this).getClass().getMethod("projectOutOfSubLevel", Level.class, Position.class);
-            return (net.minecraft.world.phys.Vec3) projectMethod.invoke(this, level, pos);
-        } catch (Exception e) {
-            if (pos instanceof final net.minecraft.world.phys.Vec3 vec) {
-                return vec;
-            }
-            return new net.minecraft.world.phys.Vec3(pos.x(), pos.y(), pos.z());
+            cir.setReturnValue(null);
         }
     }
 }
