@@ -1,0 +1,18 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "dev.sableopt.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "dev.sableopt.mixin.plugin.SableOptMixinPlugin",
+  "mixins": [
+    "network.SubLevelTrackingSystemMixin",
+    "network.SableBufferUtilsMixin"
+  ],
+  "client": [
+    "network.ClientInterpolationMixin",
+    "render.SubLevelRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

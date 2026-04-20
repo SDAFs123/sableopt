@@ -1,0 +1,17 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "dev.sableopt.neoforge.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "dev.sableopt.mixin.plugin.SableOptMixinPlugin",
+  "mixins": [
+    "physics.SubLevelPhysicsSystemMixin",
+    "network.SubLevelTrackingSystemMixin"
+  ],
+  "client": [
+    "render.SubLevelRenderDispatcherMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

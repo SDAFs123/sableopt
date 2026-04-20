@@ -1,0 +1,17 @@
+{
+  "required": false,
+  "package": "com.moepus.fakesight.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "plugin": "dev.sableopt.mixin.plugin.SableOptMixinPlugin",
+  "client": [
+    "IntegratedServerMixin",
+    "OptionsMixin"
+  ],
+  "mixins": [
+    "MixinShaderLoader"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

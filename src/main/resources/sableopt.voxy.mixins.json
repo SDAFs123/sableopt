@@ -1,0 +1,13 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "dev.sableopt.mixin.voxy",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "dev.sableopt.mixin.plugin.SableOptMixinPlugin",
+  "client": [
+    "VoxyRenderSystemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

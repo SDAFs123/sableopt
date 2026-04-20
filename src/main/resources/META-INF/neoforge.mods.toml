@@ -1,0 +1,33 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "sableopt"
+version = "${version}"
+displayName = "Sable Optimizations"
+authors = "SableOpt Team"
+description = '''
+Sable optimizations and fixes for better Minecraft performance.
+Features:
+- PoseStack bug fix for Sable EntityRenderDispatcher
+- Network delta sync and precision compression
+- Physics collision cache and octree update queue
+- SubLevel rendering and pose batching optimizations
+- FakeSight shader loading fix
+'''
+
+[[mixins]]
+config = "sableopt.mixins.json"
+
+[[mixins]]
+config = "sableopt-neoforge.mixins.json"
+
+[[mixins]]
+config = "sableopt.fix.mixins.json"
+
+[[mixins]]
+config = "fakesight.mixins.json"
+
+[[mixins]]
+config = "sableopt.voxy.mixins.json"
