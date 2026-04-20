@@ -1,35 +1,50 @@
 package dev.sableopt.fix.sable;
 
-import java.util.Optional;
 import net.minecraft.core.Position;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(targets = "dev.ryanhcode.sable.ActiveSableCompanion", remap = false)
 public class ActiveSableCompanionNullFixMixin {
 
-    @Inject(
-        method = "getContaining(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/Position;)Ldev/ryanhcode/sable/SubLevel;",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private void sableopt$nullCheckGetContaining(Level level, Position pos, CallbackInfoReturnable<Object> cir) {
+    @Overwrite
+    public Object getContaining(final Level level, final Position pos) {
         if (pos == null) {
-            cir.setReturnValue(null);
+            return null;
+        }
+        final int chunkX = Mth.floor(pos.x()) >> 4;
+        final int chunkZ = Mth.floor(pos.z()) >> 4;
+        try {
+            var method = ((Object)this).getClass().getMethod("getContaining", Level.class, int.class, int.class);
+            return method.invoke(this, level, chunkX, chunkZ);
+        } catch (Exception e) {
+            return null;
         }
     }
 
-    @Inject(
-        method = "projectOutOfSubLevel(Lnet/minecraft/world/level/Level;Lorg/joml/Vector3dc;Lorg/joml/Vector3d;)Lorg/joml/Vector3d;",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private void sableopt$nullCheckProjectOutOfSubLevel(Level level, Object pos, Object dest, CallbackInfoReturnable<Object> cir) {
+    @Overwrite
+    public net.minecraft.world.phys.Vec3 projectOutOfSubLevel(final Level level, final Position pos) {
         if (pos == null) {
-            cir.setReturnValue(dest);
+            return null;
+        }
+        try {
+            var getContainingMethod = ((Object)this).getClass().getMethod("getContaining", Level.class, Position.class);
+            Object subLevel = getContainingMethod.invoke(this, level, pos);
+            if (subLevel == null) {
+                if (pos instanceof final net.minecraft.world.phys.Vec3 vec) {
+                    return vec;
+                }
+                return new net.minecraft.world.phys.Vec3(pos.x(), pos.y(), pos.z());
+            }
+            var projectMethod = ((Object)this).getClass().getMethod("projectOutOfSubLevel", Level.class, Position.class);
+            return (net.minecraft.world.phys.Vec3) projectMethod.invoke(this, level, pos);
+        } catch (Exception e) {
+            if (pos instanceof final net.minecraft.world.phys.Vec3 vec) {
+                return vec;
+            }
+            return new net.minecraft.world.phys.Vec3(pos.x(), pos.y(), pos.z());
         }
     }
 }
